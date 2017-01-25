@@ -22,6 +22,28 @@ public final class PdbToPfamMap {
         return pfamId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PdbToPfamMap that = (PdbToPfamMap) o;
+
+        if (!getPdb().equals(that.getPdb())) return false;
+        if (!getChain().equals(that.getChain())) return false;
+        if (!getSpPrimary().equals(that.getSpPrimary())) return false;
+        return getPfamId().equals(that.getPfamId());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPdb().hashCode();
+        result = 31 * result + getChain().hashCode();
+        result = 31 * result + getSpPrimary().hashCode();
+        result = 31 * result + getPfamId().hashCode();
+        return result;
+    }
+
     public PdbToPfamMap(String pdb, String chain, String spPrimary, String pfamId) {
         this.pdb = pdb;
         this.chain = chain;

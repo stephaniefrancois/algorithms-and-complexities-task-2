@@ -1,6 +1,7 @@
-import com.francois.algo.pdb.core.FileBasedRepository;
+import com.francois.algo.pdb.data.FileBasedRepository;
 import com.francois.algo.pdb.core.IDataParser;
 import com.francois.algo.pdb.core.IRepository;
+import com.francois.algo.pdb.core.domain.AppException;
 import com.francois.algo.pdb.data.DataFileNotFoundException;
 import helpers.FakeDataModel;
 import helpers.NullLogger;
@@ -29,7 +30,7 @@ public final class FileBasedRepositoryTests {
     }
 
     @Test
-    public void ShouldReadFileWithSingleLineOfData() throws IOException, DataFileNotFoundException {
+    public void ShouldReadFileWithSingleLineOfData() throws AppException {
         // given
         String dataFile = "src/test/resources/sample.txt";
         IDataParser<FakeDataModel> parserMock = Mockito.mock(IDataParser.class);
@@ -45,7 +46,7 @@ public final class FileBasedRepositoryTests {
     }
 
     @Test
-    public void ShouldReadFileWithTwoLinesOfData() throws IOException, DataFileNotFoundException {
+    public void ShouldReadFileWithTwoLinesOfData() throws AppException {
         // given
         String dataFile = "src/test/resources/sample.txt";
         IDataParser<FakeDataModel> parserMock = Mockito.mock(IDataParser.class);
@@ -61,7 +62,7 @@ public final class FileBasedRepositoryTests {
     }
 
     @Test
-    public void ShouldReadFileWithAnyNumberLinesOfData() throws IOException, DataFileNotFoundException {
+    public void ShouldReadFileWithAnyNumberLinesOfData() throws AppException {
         // given
         String dataFile = "src/test/resources/sample.txt";
         IDataParser<FakeDataModel> parserMock = Mockito.mock(IDataParser.class);
@@ -78,7 +79,7 @@ public final class FileBasedRepositoryTests {
     }
 
     @Test
-    public void ShouldReturnParsedData() throws IOException, DataFileNotFoundException {
+    public void ShouldReturnParsedData() throws AppException {
         // given
         String dataFile = "src/test/resources/sample.txt";
         IDataParser<FakeDataModel> parserMock = Mockito.mock(IDataParser.class);
@@ -101,9 +102,7 @@ public final class FileBasedRepositoryTests {
         IRepository<FakeDataModel> sut = new FileBasedRepository<>(dataFile, parserMock);
         // when
         // then
-        DataFileNotFoundException thrown = assertThrows(DataFileNotFoundException.class, () -> {
-            sut.getAll();
-        });
+        DataFileNotFoundException thrown = assertThrows(DataFileNotFoundException.class, () -> sut.getAll());
         assertThat(thrown.getMessage(), containsString("invalid-file.txt"));
     }
 }

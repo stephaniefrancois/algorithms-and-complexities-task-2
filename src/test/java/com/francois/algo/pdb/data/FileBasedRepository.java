@@ -1,7 +1,9 @@
-package com.francois.algo.pdb.core;
+package com.francois.algo.pdb.data;
 
 import com.francois.algo.pdb.RootLogger;
-import com.francois.algo.pdb.data.DataFileNotFoundException;
+import com.francois.algo.pdb.core.IDataParser;
+import com.francois.algo.pdb.core.IRepository;
+import com.francois.algo.pdb.core.domain.AppException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,7 +32,7 @@ public final class FileBasedRepository<TModel> implements IRepository<TModel> {
     }
 
     @Override
-    public List<TModel> getAll() throws DataFileNotFoundException {
+    public List<TModel> getAll() throws AppException {
         final File file = new File(path);
         if (!file.exists() || !file.canRead() || !file.isFile()) {
             throw new DataFileNotFoundException(file.getAbsolutePath());

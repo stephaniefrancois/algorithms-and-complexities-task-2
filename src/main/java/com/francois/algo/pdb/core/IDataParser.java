@@ -1,7 +1,9 @@
 package com.francois.algo.pdb.core;
 
+import com.francois.algo.pdb.core.domain.InvalidPdbChainMapException;
+
 import java.util.List;
 
 public interface IDataParser<TModel> {
-    <TModel> List<TModel> parseToModel(List<String> dataToParse);
+    List<TModel> parseToModel(List<String> dataToParse) throws InvalidPdbChainMapException;
 }
