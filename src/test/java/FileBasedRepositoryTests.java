@@ -1,8 +1,8 @@
 import com.francois.algo.pdb.data.FileBasedRepository;
-import com.francois.algo.pdb.core.IDataParser;
-import com.francois.algo.pdb.core.IRepository;
+import com.francois.algo.pdb.data.IDataParser;
+import com.francois.algo.pdb.data.IRepository;
 import com.francois.algo.pdb.core.domain.AppException;
-import com.francois.algo.pdb.data.DataFileNotFoundException;
+import com.francois.algo.pdb.core.domain.DataFileNotFoundException;
 import helpers.FakeDataModel;
 import helpers.NullLogger;
 import org.junit.jupiter.api.BeforeAll;

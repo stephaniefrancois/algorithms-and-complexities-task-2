@@ -1,4 +1,4 @@
-package com.francois.algo.pdb.core;
+package com.francois.algo.pdb.data;
 
 import com.francois.algo.pdb.core.domain.InvalidPdbChainMapException;
 

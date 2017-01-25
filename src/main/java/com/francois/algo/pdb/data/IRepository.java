@@ -1,8 +1,6 @@
-package com.francois.algo.pdb.core;
+package com.francois.algo.pdb.data;
 
 import com.francois.algo.pdb.core.domain.AppException;
-import com.francois.algo.pdb.core.domain.InvalidPdbChainMapException;
-import com.francois.algo.pdb.data.DataFileNotFoundException;
 
 import java.util.List;
 

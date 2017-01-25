@@ -1,4 +1,4 @@
-package com.francois.algo.pdb.data;
+package com.francois.algo.pdb.core.domain;
 
 import com.francois.algo.pdb.core.domain.AppException;
 

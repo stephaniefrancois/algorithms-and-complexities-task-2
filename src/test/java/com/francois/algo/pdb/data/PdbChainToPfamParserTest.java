@@ -1,9 +1,7 @@
 package com.francois.algo.pdb.data;
 
-import com.francois.algo.pdb.core.IDataParser;
 import com.francois.algo.pdb.core.domain.InvalidPdbChainMapException;
 import com.francois.algo.pdb.core.domain.PdbToPfamMap;
-import com.francois.algo.pdb.data.PdbChainToPfamParser;
 import helpers.NullLogger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

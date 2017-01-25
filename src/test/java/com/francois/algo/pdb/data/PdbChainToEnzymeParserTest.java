@@ -1,6 +1,5 @@
 package com.francois.algo.pdb.data;
 
-import com.francois.algo.pdb.core.IDataParser;
 import com.francois.algo.pdb.core.domain.InvalidPdbChainMapException;
 import com.francois.algo.pdb.core.domain.PdbToEzymeMap;
 import helpers.NullLogger;
