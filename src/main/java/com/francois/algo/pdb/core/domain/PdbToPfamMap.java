@@ -44,6 +44,16 @@ public final class PdbToPfamMap {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "PdbToPfamMap{" +
+                "pdb='" + pdb + '\'' +
+                ", chain='" + chain + '\'' +
+                ", spPrimary='" + spPrimary + '\'' +
+                ", pfamId='" + pfamId + '\'' +
+                '}';
+    }
+
     public PdbToPfamMap(String pdb, String chain, String spPrimary, String pfamId) {
         this.pdb = pdb;
         this.chain = chain;

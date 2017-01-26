@@ -1,6 +1,6 @@
 package com.francois.algo.pdb.core.domain;
 
-public final class PdbToEzymeMap {
+public final class PdbToEnzymeMap {
     private final String pdb;
     private final String chain;
     private final String accession;
@@ -27,7 +27,7 @@ public final class PdbToEzymeMap {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PdbToEzymeMap that = (PdbToEzymeMap) o;
+        PdbToEnzymeMap that = (PdbToEnzymeMap) o;
 
         if (!getPdb().equals(that.getPdb())) return false;
         if (!getChain().equals(that.getChain())) return false;
@@ -44,7 +44,17 @@ public final class PdbToEzymeMap {
         return result;
     }
 
-    public PdbToEzymeMap(String pdb, String chain, String accession, String ecNumber) {
+    @Override
+    public String toString() {
+        return "PdbToEnzymeMap{" +
+                "pdb='" + pdb + '\'' +
+                ", chain='" + chain + '\'' +
+                ", accession='" + accession + '\'' +
+                ", ecNumber='" + ecNumber + '\'' +
+                '}';
+    }
+
+    public PdbToEnzymeMap(String pdb, String chain, String accession, String ecNumber) {
         this.pdb = pdb;
         this.chain = chain;
         this.accession = accession;

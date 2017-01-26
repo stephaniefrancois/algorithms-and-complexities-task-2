@@ -1,7 +1,7 @@
 package com.francois.algo.pdb.data;
 
 import com.francois.algo.pdb.core.domain.InvalidPdbChainMapException;
-import com.francois.algo.pdb.core.domain.PdbToEzymeMap;
+import com.francois.algo.pdb.core.domain.PdbToEnzymeMap;
 import helpers.NullLogger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,10 +28,10 @@ final class PdbChainToEnzymeParserTest {
     public void GivenEmptyListWhenParsedThenShouldReturnNoMappings() throws InvalidPdbChainMapException {
         // Given
         List<String> data = Collections.EMPTY_LIST;
-        IDataParser<PdbToEzymeMap> sut = new PdbChainToEnzymeParser();
+        IDataParser<PdbToEnzymeMap> sut = new PdbChainToEnzymeParser();
 
         // When
-        List<PdbToEzymeMap> result = sut.parseToModel(data);
+        List<PdbToEnzymeMap> result = sut.parseToModel(data);
 
         // Then
         assertThat(result, empty());
@@ -41,10 +41,10 @@ final class PdbChainToEnzymeParserTest {
     public void GivenListWithNoHeaderWhenParsedShouldReturnNoMappings() throws InvalidPdbChainMapException {
         // Given
         List<String> data = Collections.singletonList("# 2017/01/16 - 13:55");
-        IDataParser<PdbToEzymeMap> sut = new PdbChainToEnzymeParser();
+        IDataParser<PdbToEnzymeMap> sut = new PdbChainToEnzymeParser();
 
         // When
-        List<PdbToEzymeMap> result = sut.parseToModel(data);
+        List<PdbToEnzymeMap> result = sut.parseToModel(data);
 
         // Then
         assertThat(result, empty());
@@ -54,10 +54,10 @@ final class PdbChainToEnzymeParserTest {
     public void GivenListWithHeaderButNoValuesWhenParsedShouldReturnNoMappings() throws InvalidPdbChainMapException {
         // Given
         List<String> data = Arrays.asList("# 2017/01/16 - 13:55", "PDB\tCHAIN\tACCESSION\tEC_NUMBER");
-        IDataParser<PdbToEzymeMap> sut = new PdbChainToEnzymeParser();
+        IDataParser<PdbToEnzymeMap> sut = new PdbChainToEnzymeParser();
 
         // When
-        List<PdbToEzymeMap> result = sut.parseToModel(data);
+        List<PdbToEnzymeMap> result = sut.parseToModel(data);
 
         // Then
         assertThat(result, empty());
@@ -69,11 +69,11 @@ final class PdbChainToEnzymeParserTest {
         List<String> data = Arrays.asList("# 2017/01/16 - 13:55",
                 "PDB\tCHAIN\tACCESSION\tEC_NUMBER",
                 "102l\tA\tP00720\t3.2.1.17");
-        IDataParser<PdbToEzymeMap> sut = new PdbChainToEnzymeParser();
-        PdbToEzymeMap expectedMap = new PdbToEzymeMap("102l", "A", "P00720", "3.2.1.17");
+        IDataParser<PdbToEnzymeMap> sut = new PdbChainToEnzymeParser();
+        PdbToEnzymeMap expectedMap = new PdbToEnzymeMap("102l", "A", "P00720", "3.2.1.17");
 
         // When
-        List<PdbToEzymeMap> result = sut.parseToModel(data);
+        List<PdbToEnzymeMap> result = sut.parseToModel(data);
 
         // Then
         assertThat(result, hasSize(1));
@@ -86,7 +86,7 @@ final class PdbChainToEnzymeParserTest {
         List<String> data = Arrays.asList("# 2017/01/16 - 13:55",
                 "PDB\tCHAIN\tACCESSION\tEC_NUMBER",
                 "102l\tA\t3.2.1.17");
-        IDataParser<PdbToEzymeMap> sut = new PdbChainToEnzymeParser();
+        IDataParser<PdbToEnzymeMap> sut = new PdbChainToEnzymeParser();
 
         // When
         // Then
@@ -101,15 +101,15 @@ final class PdbChainToEnzymeParserTest {
                 "102l\tA\tP00720\t3.2.1.17",
                 "103l\tA\tP00720\t3.2.1.17",
                 "104l\tA\tP00720\t3.2.1.17");
-        IDataParser<PdbToEzymeMap> sut = new PdbChainToEnzymeParser();
+        IDataParser<PdbToEnzymeMap> sut = new PdbChainToEnzymeParser();
 
         // When
-        List<PdbToEzymeMap> result = sut.parseToModel(data);
+        List<PdbToEnzymeMap> result = sut.parseToModel(data);
 
         // Then
-        assertThat(result, hasItems(new PdbToEzymeMap("102l", "A", "P00720", "3.2.1.17"),
-                new PdbToEzymeMap("103l", "A", "P00720", "3.2.1.17"),
-                new PdbToEzymeMap("104l", "A", "P00720", "3.2.1.17")));
+        assertThat(result, hasItems(new PdbToEnzymeMap("102l", "A", "P00720", "3.2.1.17"),
+                new PdbToEnzymeMap("103l", "A", "P00720", "3.2.1.17"),
+                new PdbToEnzymeMap("104l", "A", "P00720", "3.2.1.17")));
     }
 
     @Test
@@ -118,12 +118,12 @@ final class PdbChainToEnzymeParserTest {
         List<String> data = Arrays.asList("# 2017/01/16 - 13:55",
                 "PDB\tCHAIN\tACCESSION\tEC_NUMBER",
                 "3it1\tA\t \t3.1.3.2");
-        IDataParser<PdbToEzymeMap> sut = new PdbChainToEnzymeParser();
+        IDataParser<PdbToEnzymeMap> sut = new PdbChainToEnzymeParser();
 
         // When
-        List<PdbToEzymeMap> result = sut.parseToModel(data);
+        List<PdbToEnzymeMap> result = sut.parseToModel(data);
 
         // Then
-        assertThat(result, hasItem(new PdbToEzymeMap("3it1", "A", "", "3.1.3.2")));
+        assertThat(result, hasItem(new PdbToEnzymeMap("3it1", "A", "", "3.1.3.2")));
     }
 }
