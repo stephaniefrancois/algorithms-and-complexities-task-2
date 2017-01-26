@@ -35,13 +35,13 @@ public final class PdbChainDataAggregator implements IRepository<PdbChainDescrip
                 .map(id -> {
                     Optional<PdbToPfamMap> pfam =
                             pfamMaps.stream()
-                                    .filter(m -> m.getPdb() == id.getPdb() &&
-                                            m.getChain() == id.getChain())
+                                    .filter(m -> Objects.equals(m.getPdb(), id.getPdb()) &&
+                                            Objects.equals(m.getChain(), id.getChain()))
                                     .findFirst();
                     Optional<PdbToEnzymeMap> enzyme =
                             enzymeMaps.stream()
-                                    .filter(m -> m.getPdb() == id.getPdb() &&
-                                            m.getChain() == id.getChain())
+                                    .filter(m -> Objects.equals(m.getPdb(), id.getPdb()) &&
+                                            Objects.equals(m.getChain(), id.getChain()))
                                     .findFirst();
 
                     String accession = "";
