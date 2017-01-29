@@ -1,6 +1,8 @@
 package com.francois.algo.pdb;
 
-import javax.swing.*;
+import com.francois.algo.pdb.composition.ServiceFactory;
+import com.francois.algo.pdb.core.PdbChainFinder;
+
 import java.io.IOException;
 import java.util.logging.*;
 
@@ -11,6 +13,14 @@ public class Main {
     public static void Main(String[] args) {
 
         log.info("PDG ALGO app starting ...");
+
+        ServiceFactory factory = ServiceFactory.getInstance();
+        PdbChainFinder finder = factory.createPdbChainFinder();
+
+        // TODO: based on user input pass in correct MATCHER and COMPARATOR!
+        // TODO: configure CONSOLE logger to output errors and warnings!
+        // TODO: build UI MENU
+        // TODO: build COMPARATOR for EC_NUMBER for multiple levels
 
 //        SwingUtilities.invokeLater(() -> {
 //            JFrame main = new AppFrame();
