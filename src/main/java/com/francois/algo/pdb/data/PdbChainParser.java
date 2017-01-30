@@ -58,23 +58,13 @@ public abstract class PdbChainParser<TModel> implements IDataParser<TModel> {
         logHeaderFound(headerIndex);
 
         for (String line : filteredData) {
-            int index = dataToParse.indexOf(line);
-            logParsingLine(index, line);
             String[] tokens = line.split("\t");
-
-            try {
-                if (tokens.length != 4) {
-                    throw this.parsingExceptionFactory.apply(line);
-                }
-                result.add(buildMap(tokens));
-                logParsedLine(index);
-            } catch (Exception ex) {
-                logFailedToParseLine(line, index, ex);
+            if (tokens.length != 4) {
+                throw this.parsingExceptionFactory.apply(line);
             }
+            result.add(buildMap(tokens));
         }
-
         logParsed(result.size());
-
         return result;
     }
 
@@ -88,19 +78,7 @@ public abstract class PdbChainParser<TModel> implements IDataParser<TModel> {
         log.info(() -> String.format("HEADER found at '%d', will parse everything starting at next line ...", headerIndex));
     }
 
-    private void logParsingLine(int headerIndex, String line) {
-        log.finer(() -> String.format("Parsing '%s' line at index '%d' ...", line, headerIndex));
-    }
-
-    private void logParsedLine(int index) {
-        log.finer(() -> String.format("Line at index '%d' parsed successfully!", index));
-    }
-
     private void logParsed(int mappingsCount) {
         log.info(() -> String.format("Finished parsing all data! '%d' mappings extracted.", mappingsCount));
-    }
-
-    private void logFailedToParseLine(String line, int index, Exception ex) {
-        log.log(Level.SEVERE, ex, () -> String.format("Failed to parse line at index '%d'. Line: '%s'", index, line));
     }
 }
