@@ -117,7 +117,9 @@ public final class PartialEcNumberBasedPdbChainMatcherTest {
                 new TestCase("2.5.1.7", "0.5.1.7", false),
                 new TestCase("2.5.1.7", "2.0.1.7", false),
                 new TestCase("2.5.1.7", "2.5.0.7", false),
-                new TestCase("2.5.1.7", "2.5.1.0", false)
+                new TestCase("2.5.1.7", "2.5.1.0", false),
+                new TestCase("2.-.1.-", "2.0.1.0", true),
+                new TestCase("2.-.1.-", "2.9.1.9", true)
         );
 
         return testCases.stream()

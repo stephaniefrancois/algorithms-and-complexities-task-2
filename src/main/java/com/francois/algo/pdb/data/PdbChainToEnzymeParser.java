@@ -8,7 +8,7 @@ import java.util.Arrays;
 public final class PdbChainToEnzymeParser extends PdbChainParser<PdbToEnzymeMap> {
     public PdbChainToEnzymeParser() {
         super(Arrays.asList("PDB", "CHAIN", "ACCESSION", "EC_NUMBER"),
-                InvalidPdbChainMapException::INVALID_ENZYM_MAPPING);
+                InvalidPdbChainMapException::INVALID_ENZYME_MAPPING);
     }
 
     @Override

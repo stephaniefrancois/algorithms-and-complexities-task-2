@@ -17,4 +17,12 @@ public final class PdbAndChainBasedPdbChainMatcher implements PdbChainMatcher {
                 pdbChainToMatch.getPdb().equals(pdb) &&
                 pdbChainToMatch.getChain().equals(chain);
     }
+
+    @Override
+    public String toString() {
+        return "PdbAndChainBasedPdbChainMatcher{" +
+                "pdb='" + pdb + '\'' +
+                ", chain='" + chain + '\'' +
+                '}';
+    }
 }

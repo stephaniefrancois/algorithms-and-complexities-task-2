@@ -139,4 +139,11 @@ public final class PartialEcNumberBasedPdbChainMatcher implements PdbChainMatche
                 pdbChainToMatch.getEcNumber(),
                 this.searchCriteria));
     }
+
+    @Override
+    public String toString() {
+        return "PartialEcNumberBasedPdbChainMatcher{" +
+                "searchCriteria='" + searchCriteria + '\'' +
+                '}';
+    }
 }

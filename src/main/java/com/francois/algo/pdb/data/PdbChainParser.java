@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -57,16 +58,19 @@ public abstract class PdbChainParser<TModel> implements IDataParser<TModel> {
         logHeaderFound(headerIndex);
 
         for (String line : filteredData) {
-
-            logParsingLine(headerIndex, line);
+            int index = dataToParse.indexOf(line);
+            logParsingLine(index, line);
             String[] tokens = line.split("\t");
 
-            if (tokens.length != 4) {
-                throw this.parsingExceptionFactory.apply(line);
+            try {
+                if (tokens.length != 4) {
+                    throw this.parsingExceptionFactory.apply(line);
+                }
+                result.add(buildMap(tokens));
+                logParsedLine(index);
+            } catch (Exception ex) {
+                logFailedToParseLine(line, index, ex);
             }
-
-            result.add(buildMap(tokens));
-            logParsedLine();
         }
 
         logParsed(result.size());
@@ -85,14 +89,18 @@ public abstract class PdbChainParser<TModel> implements IDataParser<TModel> {
     }
 
     private void logParsingLine(int headerIndex, String line) {
-        log.fine(() -> String.format("Parsing '%s' line at index '%d' ...", line, headerIndex));
+        log.finer(() -> String.format("Parsing '%s' line at index '%d' ...", line, headerIndex));
     }
 
-    private void logParsedLine() {
-        log.fine(() -> String.format("Line at index '%d' parsed successfully!"));
+    private void logParsedLine(int index) {
+        log.finer(() -> String.format("Line at index '%d' parsed successfully!", index));
     }
 
     private void logParsed(int mappingsCount) {
         log.info(() -> String.format("Finished parsing all data! '%d' mappings extracted.", mappingsCount));
+    }
+
+    private void logFailedToParseLine(String line, int index, Exception ex) {
+        log.log(Level.SEVERE, ex, () -> String.format("Failed to parse line at index '%d'. Line: '%s'", index, line));
     }
 }

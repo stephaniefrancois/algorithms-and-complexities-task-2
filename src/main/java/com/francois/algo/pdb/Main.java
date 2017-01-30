@@ -1,7 +1,7 @@
 package com.francois.algo.pdb;
 
+import com.francois.algo.pdb.app.DashboardUI;
 import com.francois.algo.pdb.composition.ServiceFactory;
-import com.francois.algo.pdb.core.PdbChainFinder;
 
 import java.io.IOException;
 import java.util.logging.*;
@@ -10,28 +10,16 @@ public class Main {
 
     private static Logger log = configureRootLogger();
 
-    public static void Main(String[] args) {
-
-        log.info("PDG ALGO app starting ...");
-
+    public static void main(String[] args) {
+        log.info("PDB ALGO app starting ...");
         ServiceFactory factory = ServiceFactory.getInstance();
-        PdbChainFinder finder = factory.createPdbChainFinder();
-
-        // TODO: based on user input pass in correct MATCHER and COMPARATOR!
-        // TODO: configure CONSOLE logger to output errors and warnings!
-        // TODO: build UI MENU
-        // TODO: build COMPARATOR for EC_NUMBER for multiple levels
-
-//        SwingUtilities.invokeLater(() -> {
-//            JFrame main = new AppFrame();
-//        });
-
-        log.info("PDG ALGO application has been started successfully.");
-
+        DashboardUI dashboard = factory.createDashboard(System.in, System.out);
+        dashboard.displayMainMenu();
     }
     private static Logger configureRootLogger() {
         Handler handler = new ConsoleHandler();
-        Level logLevel = Level.ALL;
+        Handler consoleHandler = new ConsoleHandler();
+        Level logLevel = Level.FINE;
         try {
             handler = new FileHandler("./app.log", true);
         } catch (IOException e) {
@@ -41,7 +29,9 @@ public class Main {
         Logger logger = Logger.getLogger("root");
         handler.setFormatter(formatter);
         handler.setLevel(logLevel);
+        consoleHandler.setLevel(Level.WARNING);
         logger.addHandler(handler);
+        logger.addHandler(consoleHandler);
         logger.setLevel(logLevel);
 
         return logger;
