@@ -7,6 +7,7 @@ import com.francois.algo.pdb.composition.ServiceFactory;
 import com.francois.algo.pdb.core.PdbChainFinder;
 import com.francois.algo.pdb.core.domain.AppException;
 import com.francois.algo.pdb.core.domain.PdbChainDescriptor;
+import com.francois.algo.pdb.core.search.InvalidSearchArgumentException;
 import com.francois.algo.pdb.core.search.PdbChainMatcher;
 
 import java.io.InputStream;
@@ -74,9 +75,15 @@ public final class SearchUI implements IRaiseEvents<SearchEventListener> {
     public void requestSearchCriteriaForEcNumber() {
         this.printPossibleEcNumberCombinations();
         String ecNumber = getCriteria("Please enter valid FULL or PARTIAL EC NUMBER value for search.");
-        PdbChainMatcher matcher = this.serviceFactory.createMatcherByEcNumber(ecNumber);
-        Comparator<PdbChainDescriptor> comparator = this.serviceFactory.createComparator();
-        executeSearch(matcher, comparator);
+        try {
+            PdbChainMatcher matcher = this.serviceFactory.createMatcherByEcNumber(ecNumber);
+            Comparator<PdbChainDescriptor> comparator = this.serviceFactory.createComparator();
+            executeSearch(matcher, comparator);
+        } catch (InvalidSearchArgumentException ex) {
+            this.out.println(String.format("'%s' is NOT valid search argument! Please read the possible arguments list!",
+                    ecNumber));
+            this.requestSearchCriteriaForEcNumber();
+        }
     }
 
     private void printPossibleEcNumberCombinations() {

@@ -22,9 +22,9 @@ public final class SearchResultsPrinterUI {
             this.out.println();
             this.out.println("'" + descriptors.size() + "' PROTEIN DATA STRUCTURES have been found:");
             this.out.println();
-            String format = "%-5s%-5s%-15s%-15s%-15s%-15s\n";
+            String format = "%-10s%-10s%-15s%-15s%-15s%-15s\n";
             this.out.format(format,"PDB", "CHAIN", "ACCESSION", "EC NUMBER", "SP PRIMARY", "PFAM ID");
-            this.out.format(format,"-----","-----","---------------",
+            this.out.format(format,"----------","----------","---------------",
                     "---------------","---------------","---------------");
 
             for (PdbChainDescriptor descriptor : descriptors) {

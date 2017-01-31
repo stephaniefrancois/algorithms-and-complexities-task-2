@@ -52,7 +52,7 @@ public final class ServiceFactory {
         return new PdbAndChainBasedPdbChainMatcher(pdb, chain);
     }
 
-    public final PdbChainMatcher createMatcherByEcNumber(String partialEcNumber) {
+    public final PdbChainMatcher createMatcherByEcNumber(String partialEcNumber) throws InvalidSearchArgumentException {
         return new PartialEcNumberBasedPdbChainMatcher(partialEcNumber,
                 new EcNumberBasedSearchCriteriaValidator());
     }

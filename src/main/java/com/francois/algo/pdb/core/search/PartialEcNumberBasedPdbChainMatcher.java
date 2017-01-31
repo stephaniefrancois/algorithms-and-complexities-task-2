@@ -58,21 +58,26 @@ import java.util.logging.Logger;
         5. 2.-.-.-
         6. 2.0.0.7 to 2.9.9.7
  */
-
 public final class PartialEcNumberBasedPdbChainMatcher implements PdbChainMatcher {
 
     private static final Logger log = RootLogger.get();
+    private static final int EC_NUMBER_PARTS_COUNT = 4;
     private static final String EC_NUMBER_SEPARATOR = "\\.";
     private static final String MATCH_ANY_WILDCARD = "-";
     private final String searchCriteria;
     private final List<String> searchCriteriaParts;
-    private final SearchCriteriaValidator validator;
 
-    public PartialEcNumberBasedPdbChainMatcher(String searchCriteria, SearchCriteriaValidator validator) {
+    public PartialEcNumberBasedPdbChainMatcher(String searchCriteria,
+                                               SearchCriteriaValidator validator) throws InvalidSearchArgumentException {
         Objects.requireNonNull(searchCriteria);
         Objects.requireNonNull(validator);
         this.searchCriteria = searchCriteria;
-        this.validator = validator;
+
+        if (!validator.valid(searchCriteria)) {
+            logInvalidSearchArgument();
+            throw new InvalidSearchArgumentException(searchCriteria);
+        }
+
         this.searchCriteriaParts = Arrays.asList(searchCriteria.split(EC_NUMBER_SEPARATOR));
     }
 
@@ -80,11 +85,6 @@ public final class PartialEcNumberBasedPdbChainMatcher implements PdbChainMatche
     public final boolean doesMatch(PdbChainDescriptor pdbChainToMatch) {
         if (pdbChainToMatch == null) {
             logNoPdbChainSupplied();
-            return false;
-        }
-
-        if (!this.validator.valid(searchCriteria)) {
-            logInvalidSearchArgument();
             return false;
         }
 
@@ -98,6 +98,11 @@ public final class PartialEcNumberBasedPdbChainMatcher implements PdbChainMatche
     private boolean partialMatch(PdbChainDescriptor pdbChainToMatch) {
         List<String> ecNumberToMatchParts = Arrays.asList(pdbChainToMatch.getEcNumber().split(EC_NUMBER_SEPARATOR));
 
+        if (ecNumberToMatchParts.size() != EC_NUMBER_PARTS_COUNT) {
+            logInvalidEcNumber(pdbChainToMatch.getEcNumber());
+            return false;
+        }
+
         for (int index = 0; index < 4; index++) {
             String ecNumberPart = ecNumberToMatchParts.get(index);
             String searchCriteriaPart = searchCriteriaParts.get(index);
@@ -108,12 +113,8 @@ public final class PartialEcNumberBasedPdbChainMatcher implements PdbChainMatche
                 continue;
             }
 
-            logNoPartialMatch(pdbChainToMatch);
-
             return false;
         }
-
-        logPartialMatch(pdbChainToMatch);
 
         return true;
     }
@@ -128,16 +129,14 @@ public final class PartialEcNumberBasedPdbChainMatcher implements PdbChainMatche
                 this.searchCriteria));
     }
 
-    private void logNoPartialMatch(PdbChainDescriptor pdbChainToMatch) {
-        log.fine(() -> String.format("PDB CHAIN with '%s' EC NUMBER failed ton partially match given '%s' search criteria!",
-                pdbChainToMatch.getEcNumber(),
-                this.searchCriteria));
-    }
-
-    private void logPartialMatch(PdbChainDescriptor pdbChainToMatch) {
-        log.fine(() -> String.format("PDB CHAIN with '%s' EC NUMBER has been partially matched given '%s' search criteria.",
-                pdbChainToMatch.getEcNumber(),
-                this.searchCriteria));
+    private void logInvalidEcNumber(String ecNumber) {
+        log.finer(() -> String.format("'%s' is NOT a valid EC NUMBER! All EC_NUMBERS must contain %d " +
+                        "sections divided by DOT. " +
+                        "If Section is not known, please use a wildcard '%s', ex 1.%s.1.1",
+                ecNumber,
+                EC_NUMBER_PARTS_COUNT,
+                MATCH_ANY_WILDCARD,
+                MATCH_ANY_WILDCARD));
     }
 
     @Override

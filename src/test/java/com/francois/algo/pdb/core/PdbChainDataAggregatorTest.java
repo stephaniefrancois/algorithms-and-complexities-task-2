@@ -104,8 +104,8 @@ public final class PdbChainDataAggregatorTest {
         assertThat(result, hasItems(
                 new PdbChainDescriptor("102l", "A", "P00720",
                 "3.2.1.17", "P00720", "PF00959"),
-                new PdbChainDescriptor("10mh", "A", "",
-                "", "P05102", "PF00145")));
+                new PdbChainDescriptor("10mh", "A", "-----",
+                "-----", "P05102", "PF00145")));
     }
 
     @Test
@@ -133,7 +133,7 @@ public final class PdbChainDataAggregatorTest {
         assertThat(result, hasItems(new PdbChainDescriptor("102l", "A", "P00720",
                 "3.2.1.17", "P00720", "PF00959"),
                 new PdbChainDescriptor("10mh", "A", "P05102",
-                "2.1.1.37", "", "")));
+                "2.1.1.37", "-----", "-----")));
     }
 
     @Test

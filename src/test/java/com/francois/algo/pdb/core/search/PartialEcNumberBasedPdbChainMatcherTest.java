@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -30,9 +31,9 @@ public final class PartialEcNumberBasedPdbChainMatcherTest {
     public void GivenEcNumberWhenMatcherMatchesThenReturnTrue() throws AppException {
         // Given
         SearchCriteriaValidator validatorMock = Mockito.mock(SearchCriteriaValidator.class);
+        when(validatorMock.valid(anyString())).thenReturn(true);
         PdbChainMatcher sut = new PartialEcNumberBasedPdbChainMatcher("3.2.1.17", validatorMock);
         PdbChainDescriptor pdbChain = getPdbChain("103l", "A", "3.2.1.17");
-        when(validatorMock.valid(anyString())).thenReturn(true);
 
         // When
         boolean result = sut.doesMatch(pdbChain);
@@ -45,8 +46,8 @@ public final class PartialEcNumberBasedPdbChainMatcherTest {
     public void GivenNullWhenMatchingThenReturnFalse() throws AppException {
         // Given
         SearchCriteriaValidator validatorMock = Mockito.mock(SearchCriteriaValidator.class);
-        PdbChainMatcher sut = new PartialEcNumberBasedPdbChainMatcher("3.2.1.17", validatorMock);
         when(validatorMock.valid(anyString())).thenReturn(true);
+        PdbChainMatcher sut = new PartialEcNumberBasedPdbChainMatcher("3.2.1.17", validatorMock);
 
         // When
         boolean result = sut.doesMatch(null);
@@ -59,15 +60,11 @@ public final class PartialEcNumberBasedPdbChainMatcherTest {
     public void GivenEcNumberWhenSearchArgumentIsInvalidThenReturnFalse() throws AppException {
         // Given
         SearchCriteriaValidator validatorMock = Mockito.mock(SearchCriteriaValidator.class);
-        PdbChainMatcher sut = new PartialEcNumberBasedPdbChainMatcher("3.2.1.17", validatorMock);
-        PdbChainDescriptor pdbChain = getPdbChain("103l", "A", "3.2.1.17");
         when(validatorMock.valid(anyString())).thenReturn(false);
-
         // When
-        boolean result = sut.doesMatch(pdbChain);
-
         // Then
-        assertThat(result, is(equalTo(false)));
+        assertThrows(InvalidSearchArgumentException.class,
+                () -> new PartialEcNumberBasedPdbChainMatcher("3.2.1.17", validatorMock));
     }
 
     @TestFactory
@@ -132,8 +129,8 @@ public final class PartialEcNumberBasedPdbChainMatcherTest {
     private Executable assertSearchCriteria(TestCase testCase) {
         return () -> {
             SearchCriteriaValidator validatorMock = Mockito.mock(SearchCriteriaValidator.class);
-            PdbChainMatcher sut = new PartialEcNumberBasedPdbChainMatcher(testCase.getSearchCriteria(), validatorMock);
             when(validatorMock.valid(anyString())).thenReturn(true);
+            PdbChainMatcher sut = new PartialEcNumberBasedPdbChainMatcher(testCase.getSearchCriteria(), validatorMock);
             PdbChainDescriptor pdbChain = getPdbChain("103l", "A", testCase.getEcNumber());
             assertThat(sut.doesMatch(pdbChain), is(equalTo(testCase.isExpectedResult())));
         };

@@ -1,6 +1,7 @@
 package com.francois.algo.pdb.core;
 
 import com.francois.algo.pdb.RootLogger;
+import com.francois.algo.pdb.common.StringExtensions;
 import com.francois.algo.pdb.core.domain.AppException;
 import com.francois.algo.pdb.core.domain.PdbChainDescriptor;
 import com.francois.algo.pdb.core.domain.PdbToEnzymeMap;
@@ -15,6 +16,8 @@ import java.util.stream.Stream;
 
 public final class PdbChainDataAggregator implements IRepository<PdbChainDescriptor> {
     private static final Logger log = RootLogger.get();
+    private static final String VALUE_NOT_SUPPLIED = "-----";
+    private static final String VALUE_EMPTY = "EMPTY";
     private final IRepository<PdbToPfamMap> pfamRepository;
     private final IRepository<PdbToEnzymeMap> enzymeRepository;
 
@@ -95,14 +98,16 @@ public final class PdbChainDataAggregator implements IRepository<PdbChainDescrip
             for (PdbToEnzymeMap enzyme:enzymes) {
                 discoveredDescriptors.add(
                         new PdbChainDescriptor(enzyme.getPdb(), enzyme.getChain(),
-                                enzyme.getAccession(), enzyme.getEcNumber(), "", "")
+                                enzyme.getAccession(), enzyme.getEcNumber(),
+                                VALUE_NOT_SUPPLIED, VALUE_NOT_SUPPLIED)
                 );
             }
         } else if (enzymes.isEmpty()) {
             for (PdbToPfamMap pfam:pfams) {
                 discoveredDescriptors.add(
                         new PdbChainDescriptor(pfam.getPdb(), pfam.getChain(),
-                                "", "", pfam.getSpPrimary(), pfam.getPfamId())
+                                VALUE_NOT_SUPPLIED, VALUE_NOT_SUPPLIED,
+                                pfam.getSpPrimary(), pfam.getPfamId())
                 );
             }
         } else {
@@ -110,14 +115,20 @@ public final class PdbChainDataAggregator implements IRepository<PdbChainDescrip
                 for (PdbToPfamMap pfam:pfams) {
                     discoveredDescriptors.add(
                             new PdbChainDescriptor(pfam.getPdb(), pfam.getChain(),
-                                    enzyme.getAccession(), enzyme.getEcNumber() ,
-                                    pfam.getSpPrimary(), pfam.getPfamId())
+                                    getValueOrDefault(enzyme.getAccession()),
+                                    getValueOrDefault(enzyme.getEcNumber()),
+                                    getValueOrDefault(pfam.getSpPrimary()),
+                                    getValueOrDefault(pfam.getPfamId()))
                     );
                 }
             }
         }
 
         return discoveredDescriptors;
+    }
+
+    private String getValueOrDefault(String value) {
+        return StringExtensions.getValueOrDefault(value, VALUE_EMPTY);
     }
 
     private void logBuildingPfamMaps() {
