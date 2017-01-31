@@ -18,12 +18,14 @@ public final class SearchResultsPrinterUI {
         if (descriptors.isEmpty()) {
             this.out.println("No PROTEIN DATA STRUCTURES found :(");
         } else {
+            this.out.println();
+            this.out.println();
             this.out.println("'" + descriptors.size() + "' PROTEIN DATA STRUCTURES have been found:");
-
-            String format = "%-10s%-5s%-15s%-15s%-15s%-15s\n";
+            this.out.println();
+            String format = "%-5s%-5s%-15s%-15s%-15s%-15s\n";
             this.out.format(format,"PDB", "CHAIN", "ACCESSION", "EC NUMBER", "SP PRIMARY", "PFAM ID");
-            this.out.format(format,"-------------","-----------------","-------------",
-                    "-------------","-------------","-------------");
+            this.out.format(format,"-----","-----","---------------",
+                    "---------------","---------------","---------------");
 
             for (PdbChainDescriptor descriptor : descriptors) {
                 printSequence(descriptor, format);

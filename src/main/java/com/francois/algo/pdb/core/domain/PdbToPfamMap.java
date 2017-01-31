@@ -1,6 +1,6 @@
 package com.francois.algo.pdb.core.domain;
 
-public final class PdbToPfamMap {
+public final class PdbToPfamMap implements IHaveKey {
     private final String pdb;
     private final String chain;
     private final String spPrimary;
@@ -59,5 +59,10 @@ public final class PdbToPfamMap {
         this.chain = chain;
         this.spPrimary = spPrimary;
         this.pfamId = pfamId;
+    }
+
+    @Override
+    public String getKey() {
+        return String.format("%s-%s-%s", this.getChain(), this.getPdb(), this.getSpPrimary());
     }
 }

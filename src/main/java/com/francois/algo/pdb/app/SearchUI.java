@@ -62,7 +62,7 @@ public final class SearchUI implements IRaiseEvents<SearchEventListener> {
                     comparator
             );
             this.searchResultsPrinterUi.print(descriptors);
-        } catch (AppException e) {
+        } catch (Exception e) {
             this.out.println(String.format("Failed to execute search for '%s'!", matcher.toString()));
             this.out.println();
             logSearchFailedForPdbAndChain(matcher.toString(), e);
@@ -72,14 +72,15 @@ public final class SearchUI implements IRaiseEvents<SearchEventListener> {
     }
 
     public void requestSearchCriteriaForEcNumber() {
-        String ecNumber = getCriteria("Please enter valid FULL or PARTIAL EC NUMBER value for search.");
         this.printPossibleEcNumberCombinations();
+        String ecNumber = getCriteria("Please enter valid FULL or PARTIAL EC NUMBER value for search.");
         PdbChainMatcher matcher = this.serviceFactory.createMatcherByEcNumber(ecNumber);
         Comparator<PdbChainDescriptor> comparator = this.serviceFactory.createComparator();
         executeSearch(matcher, comparator);
     }
 
     private void printPossibleEcNumberCombinations() {
+        this.out.println();
         this.out.println("  Accepted EC NUMBER formats are as follows:");
         this.out.println("  1.1.1.1 = Full Match");
         this.out.println("  1.1.1.- = Partial Match");
@@ -114,7 +115,7 @@ public final class SearchUI implements IRaiseEvents<SearchEventListener> {
         this.listenersManager.addListener(listenerToRemove);
     }
 
-    private void logSearchFailedForPdbAndChain(String searchCriteria, AppException e) {
+    private void logSearchFailedForPdbAndChain(String searchCriteria, Exception e) {
         log.log(Level.SEVERE, e, () -> String.format("Failed to execute search for '%s'!", searchCriteria));
     }
 }

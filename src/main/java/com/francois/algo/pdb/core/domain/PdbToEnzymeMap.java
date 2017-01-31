@@ -1,6 +1,6 @@
 package com.francois.algo.pdb.core.domain;
 
-public final class PdbToEnzymeMap {
+public final class PdbToEnzymeMap implements IHaveKey {
     private final String pdb;
     private final String chain;
     private final String accession;
@@ -59,5 +59,10 @@ public final class PdbToEnzymeMap {
         this.chain = chain;
         this.accession = accession;
         this.ecNumber = ecNumber;
+    }
+
+    @Override
+    public String getKey() {
+        return String.format("%s-%s-%s", this.getChain(), this.getPdb(), this.getAccession());
     }
 }

@@ -28,7 +28,8 @@ public final class PdbChainDataCacheTest {
 
         // Given
         IRepository<PdbChainDescriptor> chainDataProvider = Mockito.mock(IRepository.class);
-               List<PdbChainDescriptor> data = Collections.emptyList();
+               List<PdbChainDescriptor> data = Collections.singletonList(
+                       new PdbChainDescriptor("", "", "", "", "", ""));
 
         when(chainDataProvider.getAll()).thenReturn(data);
 
@@ -48,7 +49,8 @@ public final class PdbChainDataCacheTest {
 
         // Given
         IRepository<PdbChainDescriptor> chainDataProvider = Mockito.mock(IRepository.class);
-               List<PdbChainDescriptor> data = Collections.emptyList();
+        List<PdbChainDescriptor> data = Collections.singletonList(
+                new PdbChainDescriptor("", "", "", "", "", ""));
 
         when(chainDataProvider.getAll()).thenReturn(data);
 
