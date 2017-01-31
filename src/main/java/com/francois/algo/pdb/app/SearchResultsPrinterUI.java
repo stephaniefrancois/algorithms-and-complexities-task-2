@@ -20,7 +20,7 @@ public final class SearchResultsPrinterUI {
         } else {
             this.out.println();
             this.out.println();
-            this.out.println("'" + descriptors.size() + "' PROTEIN DATA STRUCTURES have been found:");
+            this.out.println(String.format("'%d' PROTEIN DATA STRUCTURES have been found:", descriptors.size()));
             this.out.println();
             String format = "%-10s%-10s%-15s%-15s%-15s%-15s\n";
             this.out.format(format,"PDB", "CHAIN", "ACCESSION", "EC NUMBER", "SP PRIMARY", "PFAM ID");
@@ -32,7 +32,8 @@ public final class SearchResultsPrinterUI {
             }
         }
         this.out.println();
-        this.out.println("   End of search results");
+        this.out.println(String.format("   End of search results. '%d' total results have been displayed!",
+                descriptors.size()));
         this.out.println();
         this.out.println();
     }
@@ -45,10 +46,5 @@ public final class SearchResultsPrinterUI {
                 descriptor.getEcNumber(),
                 descriptor.getSpPrimary(),
                 descriptor.getPfamId());
-
-        //        this.out.println();
-//        this.out.println("    ID: " + sequence.getSequenceId());
-//        this.out.println("    Description: " + sequence.getDescription());
-//        this.out.println("    Sequence: " + sequence.getSequence());
     }
 }

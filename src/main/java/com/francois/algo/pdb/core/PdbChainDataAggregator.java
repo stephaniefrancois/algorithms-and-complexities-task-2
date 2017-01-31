@@ -128,6 +128,9 @@ public final class PdbChainDataAggregator implements IRepository<PdbChainDescrip
     }
 
     private String getValueOrDefault(String value) {
+        if (value.trim().isEmpty()) {
+            int a = 1;
+        }
         return StringExtensions.getValueOrDefault(value, VALUE_EMPTY);
     }
 
